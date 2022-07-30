@@ -1,25 +1,44 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// 路由守卫
+import routingGuard from "./routingGuard"
+
+// 动态路由
+import goods from "./model/goods"
+import homepage from "./model/homepage"
+import member from "./model/member"
+import staff from "./model/staff"
+import supplier from "./model/supplier"
+
+// 动态组件
+const dynamic = [
+  goods,
+  homepage,
+  member,
+  staff,
+  supplier
+]
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path:"/",
+    redirect:"/index"
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path:"/index",
+    component:()=>import("@/views/layout/layoutPage.vue")
+  },
+  {
+    path:"/login",
+    component:()=>import("@/views/login")
   }
+
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes:[...routes,...dynamic],
 })
+
+routingGuard(router)
 
 export default router
